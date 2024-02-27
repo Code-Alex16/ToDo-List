@@ -8,9 +8,11 @@ vocabulario = {
     "opcion 5" : "5. Mostrar tareas Guardadas",
     "opcion 6" : "6. salir",
     "error" : "Existe un error dentro del programa",
-    "estado 1" : "Comenzado",
-    "estado 2" : "Suspendido",
-    "estado 3" : "Terminado"
+    "estado 1" : "Comenzada",
+    "estado 2" : "Suspendida",
+    "estado 3" : "Terminada",
+    "Guardado 1": "Iniciando guardado de las Tareas, porfavor espere",
+    "Guardado 2": "Guardado exitosamente en el fichero 'Tareas.txt'..."
 }
 
 '''

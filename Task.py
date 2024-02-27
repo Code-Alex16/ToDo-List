@@ -2,11 +2,15 @@
 class Task:
 
     #iniciamos por defecto con valores nulos los datos
-    def __init__(self,titulo,descipcion,estado):
+    def __init__(self,id,titulo,descipcion,estado):
+        self.id = id
         self.titulo = titulo
         self.descripcion = descipcion
         self.estado = estado
     
+    def getId(self):
+        return self.id
+
     def getTitulo(self):
         return self.titulo
     

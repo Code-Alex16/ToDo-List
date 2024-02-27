@@ -1,74 +1,81 @@
 #importamos todos los modulos a usar
 import funcionalidades as fn
-#para el archivo texto importamos la variable vocabulario nombrada como nte
 from text import vocabulario as nte
 
 def main():
+
+    #variable a utilizar instanciadas desde el inicio
     tareas = {}
+    id = 1
+
+    #ciclo para la repetitividad de las tareas
     while True:
+
+        #Mostramos por consola texto plano
         print(nte["titulo"])
         for i in range(1,7):
             print(nte[f"opcion {i}"])
         
         userOption = int(input("eliga una de las opciones establecidas anteriormente: "))
         
-        if (userOption == 1): #creamos una nueva tarea por defecto comenzada
+
+        #creamos una nueva tarea por defecto comenzada
+        if (userOption == 1): 
             titulo = input("Ingrese el titulo de la tarea: ")
             descipcion = input("Ingrese la descipcion de la tarea: ")
-            tarea = fn.CrearTarea(titulo,descipcion,"comenzada")
-
-            #guardado provisional
-            tareas[tarea.getTitulo()] = [tarea.getDescripcion(), tarea.getEstado()]
             
-        elif (userOption == 2): #Eliminamos una tarea existente 
+            #guardamos con indice el id y el objeto tipo tarea
+            tareas[id] = fn.CrearTarea(id,titulo,descipcion,"comenzada")
 
-            #Mostramos todas las tareas existentes
-            for i,keys in enumerate(tareas.keys()):
-                print(f"{i+1}: {keys}")
+            #aumentamos el valor de id para que se incremente de manera automatica
+            id += 1
 
-            #validamos los datos ingresados    
-            try:
-                userSelection = int(input("elija la tarea que desea eliminar: "))
+        #Eliminamos una tarea existente 
+        elif (userOption == 2): 
+            if not tareas:
+                print("No hay tareas para eliminar.")
+            else:
+                print("| id | Task")
+                for tarea in tareas.values():
+                    print(f"| {tarea.getId()}  | {tarea.getTitulo()}")
+                
+                try:
+                    userSelection = int(input("elija la tarea que desea eliminar, seleccione su id: "))
 
-                #creamos una lista con las claves del diccionario
-                claves = list(tareas.keys())
+                    # Verificamos si la tarea seleccionada existe antes de intentar eliminarla
+                    if userSelection in tareas:
+                        nuevasTareas = fn.EliminarTarea(userSelection,tareas)
+                        tareas = nuevasTareas
+                    else:
+                        print("No existe una tarea con ese ID.")
+                except ValueError:
+                    print("Por favor, ingrese un ID de tarea válido.")
 
-                #enviamos la clave buscada por el indice en una lista y el diccionario original
-                nuevasTareas = fn.EliminarTarea(claves[userSelection-1],tareas)
-                tareas.clear
-                tareas = nuevasTareas
-
-            except:
-                print("seleccione una opcion valida\n")
-
+        #Cmabio de estado de una tarea existente
         elif (userOption == 3):
-            for i,keys in enumerate(tareas.keys()):
-                print(f"{i+1}: {keys} - estado: {tareas[keys][1]}")
-
+            print("| id | Task                        | status     |")
+            #Mostramos todas las tareas existentes
+            for tarea in tareas.values():
+                print(f"| {tarea.getId()}  | {tarea.getTitulo()}                    | {tarea.getEstado()}     |")
+            
             #validamos los datos ingresados    
             try:
                 userSelection = int(input("elija la tarea que desea cambiar el estado: "))
-
-                #creamos una lista con las claves del diccionario
-                claves = list(tareas.keys())
-                valores = list(tareas.values())
                 
-                #enviamos la clave buscada por el indice en una lista y el diccionario original
-                nuevasTareas = fn.CambiarEstado(claves[userSelection-1],tareas,valores[userSelection-1])
+                #enviamos el id y el diccionario con las tareas indexadas por su id como llave y un objeto como valor
+                nuevasTareas = fn.CambiarEstado(userSelection,tareas)
                 tareas.clear
                 tareas = nuevasTareas
-                
+        
             except:
                 print("seleccione una opcion valida\n")
         
         elif (userOption == 4):
-            nameFichero = input("Ingrese el nombre del fichero donde se guardara todas las tareas: ")
-            fn.GuardarTareas(tareas,nameFichero,len(tareas))
+            print(nte["Guardado 1"])
+            fn.GuardarTareas(tareas)
 
         elif (userOption == 5):
-            print("Indique el nombre del fichero que guardo sus Tareas")
-            nameFile = input("Ingrese el nombre del fichero: ")
-            fn.MostrarTareas(nameFile)
+            fn.MostrarTareas()
 
         elif (userOption == 6):
             break
